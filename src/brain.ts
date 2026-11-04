@@ -66,7 +66,8 @@ export function allTools(): Anthropic.Beta.BetaToolUnion[] {
       type: "web_search_20260209",
       name: "web_search",
       max_uses: 5,
-      user_location: { type: "approximate", city: "Dubai", country: "AE", timezone: TZ },
+      // No user_location: the API rejects country "AE" ("Country code AE is not supported").
+      // Dubai context comes from the persona and the <now> timestamp on each user turn instead.
     },
     { type: "web_fetch_20260209", name: "web_fetch", max_uses: 3 },
     ...definitions(),
