@@ -13,6 +13,7 @@ export default defineConfig(async () => {
             APP_PASSWORD: "test-pass",
             SECRET_KEY: "test-secret",
             ANTHROPIC_API_KEY: "sk-ant-test",
+            SHORTCUT_TOKEN: "shortcut-test-key",
           },
         },
       }),

@@ -7,6 +7,7 @@ import * as google from "./google";
 import { allMemories, forget } from "./tools/memory";
 import { addTask, deleteTask, listTasks, updateTask } from "./tools/tasks";
 import { ToolInputError } from "./tools/registry";
+import { handleShortcut } from "./shortcut";
 
 const json = (data: unknown, status = 200, headers: HeadersInit = {}) =>
   new Response(JSON.stringify(data), { status, headers: { "Content-Type": "application/json", ...headers } });
@@ -80,6 +81,9 @@ async function route(req: Request, env: Env, ctx: ExecutionContext): Promise<Res
   if (path === "/api/logout" && method === "POST") {
     return json({ ok: true }, 200, { "Set-Cookie": logoutCookie() });
   }
+
+  // iPhone Shortcuts: authenticated with its own bearer key (SHORTCUT_TOKEN), not the login cookie.
+  if (path === "/api/shortcut") return handleShortcut(req, env);
 
   // iOS may finish Google sign-in in a browser without the session cookie, so the callback is public.
   // It's still safe: it only accepts a one-time `state` minted by the logged-in /google/connect.
