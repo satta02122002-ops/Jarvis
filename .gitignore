@@ -1,7 +1,5 @@
-.venv/
-__pycache__/
-*.pyc
+node_modules/
+.wrangler/
+.dev.vars
 .env
-data/
-*.db
-.pytest_cache/
+*.log

@@ -1,5 +1,5 @@
 // Minimal service worker: caches the app shell so JARVIS opens instantly; API calls always go to the network.
-const CACHE = "jarvis-v1";
+const CACHE = "jarvis-v2";
 const SHELL = ["/static/style.css", "/static/app.js", "/static/icons/icon.svg", "/static/icons/icon-180.png"];
 
 self.addEventListener("install", (e) => {

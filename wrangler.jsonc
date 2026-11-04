@@ -1,0 +1,31 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "jarvis",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat"],
+  // The iPhone web app. Files in ./public are served directly; everything else reaches the Worker.
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "not_found_handling": "none",
+    "run_worker_first": ["/api/*", "/google/*"]
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "jarvis",
+      // Filled in automatically by the GitHub deploy workflow (it creates the database on first run).
+      "database_id": "00000000-0000-0000-0000-000000000000",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "vars": {
+    "OWNER_NAME": "Sattanathan",
+    "JARVIS_MODEL": "claude-opus-5-5",
+    "JARVIS_EFFORT": "medium"
+  },
+  "observability": { "enabled": true }
+  // Secrets (set by the deploy workflow from GitHub secrets, never committed):
+  //   ANTHROPIC_API_KEY, APP_PASSWORD, SECRET_KEY, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET
+}
