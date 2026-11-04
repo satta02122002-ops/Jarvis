@@ -58,8 +58,18 @@ jobs:
       - name: Apply database migrations
         run: npx wrangler d1 migrations apply jarvis --remote
 
+      # Deploy first, then upload secrets: on the very first run the Worker doesn't exist yet,
+      # and `deploy --secrets-file` tries to read the (non-existent) Worker's secrets and fails.
       - name: Deploy
-        run: npx wrangler deploy --secrets-file "${{ runner.temp }}/secrets.json"
+        run: npx wrangler deploy
+
+      - name: Upload secrets
+        run: |
+          if [ "$(cat "${{ runner.temp }}/secrets.json")" = "{}" ]; then
+            echo "No secrets set in GitHub; skipping."
+          else
+            npx wrangler secret bulk "${{ runner.temp }}/secrets.json"
+          fi
 
       - name: Clean up
         if: always()
