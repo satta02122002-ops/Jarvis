@@ -306,7 +306,11 @@ $("#logout-btn").addEventListener("click", async () => { await api("/api/logout"
   const g = new URLSearchParams(location.search).get("google");
   if (g) history.replaceState(null, "", "/");
   try { state.status = await api("/api/status"); } catch { state.status = { authed: false }; }
-  if (!state.status.authed) return showLogin();
+  if (!state.status.authed) {
+    showLogin();
+    if (state.status.configured === false) $("#login-error").textContent = "Server not set up yet: APP_PASSWORD / SECRET_KEY secrets are missing (see README).";
+    return;
+  }
   await showApp();
   if (g === "connected") addBubble("assistant", "✅ Google connected. I can now check your Gmail and Calendar.");
   if (g === "error") addBubble("assistant", "⚠️ Google connection was cancelled or failed.", "error");

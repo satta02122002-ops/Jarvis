@@ -1,0 +1,6 @@
+# Local development secrets for `npm run dev` (copy to .dev.vars; never commit .dev.vars)
+ANTHROPIC_API_KEY=sk-ant-...
+APP_PASSWORD=choose-a-password
+SECRET_KEY=any-long-random-string
+# GOOGLE_CLIENT_ID=
+# GOOGLE_CLIENT_SECRET=
