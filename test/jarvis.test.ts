@@ -147,7 +147,10 @@ describe("agent loop", () => {
     const first = calls[0];
     expect(first).toMatchObject({ model: "claude-opus-5-5", thinking: { type: "adaptive" }, fallbacks: "default" });
     expect(first.betas).toContain("server-side-fallback-2026-07-01");
-    expect((first.tools as Block[]).some((t) => t.type === "web_search_20260209")).toBe(true);
+    const search = (first.tools as Block[]).find((t) => t.type === "web_search_20260209");
+    expect(search).toBeDefined();
+    // The API rejects user_location country "AE" with a 400, which broke every chat.
+    expect(search).not.toHaveProperty("user_location");
 
     const view = await displayMessages(E, conv);
     expect(view[0]).toEqual({ role: "user", text: "remind me to call Maersk" });
