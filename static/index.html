@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+  <title>JARVIS</title>
+  <meta name="theme-color" content="#05080d">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="JARVIS">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="apple-touch-icon" href="/static/icons/icon-180.png">
+  <link rel="icon" href="/static/icons/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js" defer></script>
+  <script src="/static/app.js" defer></script>
+</head>
+<body>
+  <!-- Login -->
+  <section id="login" class="screen hidden">
+    <div class="login-card">
+      <div class="reactor big"><span></span></div>
+      <h1>J.A.R.V.I.S.</h1>
+      <p class="muted">Identify yourself, sir.</p>
+      <form id="login-form">
+        <input id="password" type="password" placeholder="Password" autocomplete="current-password" required>
+        <button type="submit">Unlock</button>
+        <p id="login-error" class="error"></p>
+      </form>
+    </div>
+  </section>
+
+  <!-- Main app -->
+  <section id="app" class="screen hidden">
+    <header class="topbar">
+      <button id="menu-btn" class="icon-btn" aria-label="Menu">
+        <svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
+      </button>
+      <div class="title">
+        <div class="reactor"><span></span></div>
+        <div>
+          <div class="name">JARVIS</div>
+          <div id="status-line" class="muted small">Online</div>
+        </div>
+      </div>
+      <button id="new-chat" class="icon-btn" aria-label="New chat">
+        <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+      </button>
+    </header>
+
+    <main id="messages" aria-live="polite">
+      <div id="welcome" class="welcome">
+        <div class="reactor big"><span></span></div>
+        <h2 id="greeting">Good day.</h2>
+        <p class="muted">How can I help?</p>
+        <div class="chips">
+          <button class="chip" data-q="Give me my daily briefing: today's calendar, open tasks, and important unread emails.">☀️ Daily briefing</button>
+          <button class="chip" data-q="What's on my to-do list?">✅ My tasks</button>
+          <button class="chip" data-q="Any important unread emails in the last 24 hours?">📧 Inbox check</button>
+          <button class="chip" data-q="What's the latest news on UAE customs or Dubai logistics this week?">🌐 Logistics news</button>
+        </div>
+      </div>
+    </main>
+
+    <form id="composer">
+      <button id="mic-btn" type="button" class="icon-btn mic hidden" aria-label="Speak">
+        <svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>
+      </button>
+      <textarea id="input" rows="1" placeholder="Message Jarvis…" enterkeyhint="send"></textarea>
+      <button id="send-btn" type="submit" class="send" aria-label="Send">
+        <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </button>
+    </form>
+  </section>
+
+  <!-- Drawer -->
+  <div id="scrim" class="scrim hidden"></div>
+  <aside id="drawer" class="drawer" aria-hidden="true">
+    <nav class="tabs">
+      <button class="tab active" data-tab="chats">Chats</button>
+      <button class="tab" data-tab="tasks">Tasks</button>
+      <button class="tab" data-tab="memory">Memory</button>
+      <button class="tab" data-tab="settings">Settings</button>
+    </nav>
+    <div class="panel" data-panel="chats"><ul id="chat-list" class="list"></ul></div>
+    <div class="panel hidden" data-panel="tasks">
+      <form id="task-form" class="inline-form">
+        <input id="task-input" placeholder="Quick add task…" maxlength="300">
+        <button type="submit">Add</button>
+      </form>
+      <ul id="task-list" class="list"></ul>
+      <button id="show-done" class="link-btn">Show completed</button>
+    </div>
+    <div class="panel hidden" data-panel="memory">
+      <p class="muted small">Things Jarvis remembers about you. Tell Jarvis "remember that…" to add more.</p>
+      <ul id="memory-list" class="list"></ul>
+    </div>
+    <div class="panel hidden" data-panel="settings">
+      <div class="setting">
+        <div>
+          <div>Google (Gmail + Calendar)</div>
+          <div id="google-state" class="muted small">Checking…</div>
+        </div>
+        <button id="google-btn" class="pill">Connect</button>
+      </div>
+      <label class="setting">
+        <div>
+          <div>Speak replies aloud</div>
+          <div class="muted small">Uses your iPhone's voice</div>
+        </div>
+        <input id="tts-toggle" type="checkbox">
+      </label>
+      <div class="setting">
+        <div>
+          <div>Model</div>
+          <div id="model-name" class="muted small"></div>
+        </div>
+      </div>
+      <button id="logout-btn" class="pill danger">Log out</button>
+      <p class="muted small install-hint">To install: in Safari, tap Share ⬆ → <b>Add to Home Screen</b>.</p>
+    </div>
+  </aside>
+</body>
+</html>
