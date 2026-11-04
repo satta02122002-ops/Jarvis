@@ -9,8 +9,19 @@ export interface Prop {
   enum?: string[];
 }
 
+export type Channel = "web" | "shortcut";
+
+/** An action for the iPhone Shortcut to carry out with Apple's own apps after the reply arrives. */
+export interface PhoneReminder { title: string; notes: string; due: string; due_iso: string }
+export interface PhoneEvent { title: string; notes: string; location: string; start: string; end: string; start_iso: string; end_iso: string }
+export interface PhoneActions { reminders: PhoneReminder[]; events: PhoneEvent[] }
+export const emptyActions = (): PhoneActions => ({ reminders: [], events: [] });
+
 export interface ToolCtx {
   env: Env;
+  channel?: Channel;
+  /** Present on the Shortcuts channel: tools queue Apple Reminders / Calendar actions here. */
+  actions?: PhoneActions;
 }
 
 export type Args = Record<string, unknown>;
@@ -20,6 +31,8 @@ export interface ToolDef {
   description: string;
   properties: Record<string, Prop>;
   required?: string[];
+  /** Channels this tool is offered on (default: all). */
+  channels?: Channel[];
   run: (args: Args, ctx: ToolCtx) => Promise<unknown>;
 }
 
@@ -32,9 +45,10 @@ export function defineTool(def: ToolDef) {
 
 export class ToolInputError extends Error {}
 
-export function definitions(): Anthropic.Beta.BetaTool[] {
+export function definitions(channel: Channel = "web"): Anthropic.Beta.BetaTool[] {
   // Sorted so the tools block is byte-identical every request (keeps the prompt cache warm).
   return [...REGISTRY.values()]
+    .filter((t) => !t.channels || t.channels.includes(channel))
     .sort((a, b) => a.name.localeCompare(b.name))
     .map((t) => ({
       name: t.name,
@@ -79,7 +93,9 @@ export function validate(def: ToolDef, input: unknown): Args {
 /** Run a tool. Never throws: errors come back as text for the model, with isError set. */
 export async function execute(name: string, input: unknown, ctx: ToolCtx): Promise<{ text: string; isError: boolean }> {
   const def = REGISTRY.get(name);
-  if (!def) return { text: `Unknown tool: ${name}`, isError: true };
+  if (!def || (def.channels && !def.channels.includes(ctx.channel ?? "web"))) {
+    return { text: `Unknown tool: ${name}`, isError: true };
+  }
   try {
     const result = await def.run(validate(def, input), ctx);
     return { text: typeof result === "string" ? result : JSON.stringify(result), isError: false };

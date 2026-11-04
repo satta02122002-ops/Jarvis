@@ -8,6 +8,7 @@ A personal AI assistant that lives on your iPhone home screen. Powered by Claude
 - 📧 **Gmail**: search, read, summarize, and draft replies (it **never sends** mail; drafts wait in Gmail for you)
 - 📅 **Calendar**: daily agenda, create and remove events
 - 🌐 **Web search**: live rates, news and regulations, with sources
+- 📲 **iPhone Shortcuts & Siri**: "Hey Siri, Ask Jarvis", a morning briefing from your Apple Calendar, native Apple Reminders, and Share-to-Jarvis. See **[docs/SHORTCUTS.md](docs/SHORTCUTS.md)**
 
 It's a web app (PWA) that installs to your Home Screen and opens full-screen like a native app. No App Store or Mac needed.
 
@@ -54,6 +55,7 @@ Cloudflare dashboard → **Workers & Pages → jarvis → Settings → Variables
 | `ANTHROPIC_API_KEY` | ✅ | from step 1 |
 | `APP_PASSWORD` | ✅ | the password you'll type to unlock Jarvis |
 | `SECRET_KEY` | ✅ | any long random string (40+ characters); signs your login cookie |
+| `SHORTCUT_TOKEN` | optional | a long random key for iPhone Shortcuts ([docs/SHORTCUTS.md](docs/SHORTCUTS.md)) |
 | `GOOGLE_CLIENT_ID` | optional | step 6 |
 | `GOOGLE_CLIENT_SECRET` | optional | step 6 |
 
@@ -115,6 +117,7 @@ npm run typecheck
 ```
 src/
   index.ts           routes: login, /api/chat (SSE stream), tasks, memory, Google OAuth
+  shortcut.ts        /api/shortcut: iPhone Shortcuts / Siri endpoint (bearer key, JSON reply + actions)
   brain.ts           Claude agent loop: persona, tools, streaming, refusal fallback, error handling
   auth.ts            password login + HMAC-signed cookie
   google.ts          Google OAuth web flow, token refresh, API helper
@@ -125,6 +128,8 @@ src/
     tasks.ts         add / list / update / delete tasks
     memory.ts        remember / forget
     google.ts        Gmail search/read/draft, Calendar list/create/delete
+    apple.ts         iPhone Reminders / Calendar actions (Shortcuts channel only)
+docs/SHORTCUTS.md    how to build the iPhone Shortcuts
 public/              the iPhone web app (HTML/CSS/JS, manifest, service worker, icons)
 migrations/          D1 database schema
 test/                tests (Vitest in the Workers runtime)

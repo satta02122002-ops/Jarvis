@@ -22,9 +22,11 @@
   "vars": {
     "OWNER_NAME": "Sattanathan",
     "JARVIS_MODEL": "claude-opus-5-5",
-    "JARVIS_EFFORT": "medium"
+    "JARVIS_EFFORT": "medium",
+    // Effort for iPhone Shortcuts / Siri requests (they wait for the whole reply, so lighter = faster)
+    "JARVIS_SHORTCUT_EFFORT": "low"
   },
   "observability": { "enabled": true }
   // Secrets (set in the Cloudflare dashboard → jarvis → Settings → Variables and Secrets, never committed):
-  //   ANTHROPIC_API_KEY, APP_PASSWORD, SECRET_KEY, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET
+  //   ANTHROPIC_API_KEY, APP_PASSWORD, SECRET_KEY, SHORTCUT_TOKEN, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET
 }

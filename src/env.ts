@@ -6,6 +6,7 @@ export interface Env {
   OWNER_NAME?: string;
   JARVIS_MODEL?: string;
   JARVIS_EFFORT?: string;
+  JARVIS_SHORTCUT_EFFORT?: string;
 
   // secrets
   ANTHROPIC_API_KEY?: string;
@@ -13,6 +14,8 @@ export interface Env {
   SECRET_KEY?: string;
   GOOGLE_CLIENT_ID?: string;
   GOOGLE_CLIENT_SECRET?: string;
+  /** Bearer token the iPhone Shortcuts send to /api/shortcut. */
+  SHORTCUT_TOKEN?: string;
 }
 
 /** Dubai is UTC+4 all year (no daylight saving), so a fixed offset is exact. */
