@@ -1,8 +1,0 @@
-// Minimal config for the first-deploy placeholder: no vars and no bindings, on purpose.
-// (With vars/bindings, `wrangler deploy` first reads the Worker's secrets, and Cloudflare
-// rejects that read with "No access to the specified resource" while the Worker doesn't exist yet.)
-{
-  "name": "jarvis",
-  "main": "worker.js",
-  "compatibility_date": "2026-10-01"
-}
