@@ -15,8 +15,7 @@
     {
       "binding": "DB",
       "database_name": "jarvis",
-      // Filled in automatically by the GitHub deploy workflow (it creates the database on first run).
-      "database_id": "00000000-0000-0000-0000-000000000000",
+      "database_id": "6f16ac7b-6d56-4b4a-836f-20e5f715e7fb",
       "migrations_dir": "migrations"
     }
   ],
@@ -26,6 +25,6 @@
     "JARVIS_EFFORT": "medium"
   },
   "observability": { "enabled": true }
-  // Secrets (set by the deploy workflow from GitHub secrets, never committed):
+  // Secrets (set in the Cloudflare dashboard → jarvis → Settings → Variables and Secrets, never committed):
   //   ANTHROPIC_API_KEY, APP_PASSWORD, SECRET_KEY, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET
 }
